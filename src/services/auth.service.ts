@@ -11,7 +11,8 @@ export class AuthService {
     const user = await prisma.users.create({
       data: {
         ...input,
-        password: hashedPassword
+        password: hashedPassword,
+        role: 'ADMIN' 
       }
     });
 

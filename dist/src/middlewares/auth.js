@@ -19,14 +19,16 @@ const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         if (!token) {
-            return res.status(401).json({ message: 'Authentication required' });
+            res.status(401).json({ message: 'Authentication required' });
+            return;
         }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     }
     catch (error) {
-        return res.status(403).json({ message: 'Invalid token' });
+        res.status(403).json({ message: 'Invalid token' });
+        return;
     }
 });
 exports.authenticateToken = authenticateToken;
@@ -34,12 +36,14 @@ const isAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     var _a;
     try {
         if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.role) !== 'ADMIN') {
-            return res.status(403).json({ message: 'Admin access required' });
+            res.status(403).json({ message: 'Admin access required' });
+            return;
         }
         next();
     }
     catch (error) {
-        return res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });
+        return;
     }
 });
 exports.isAdmin = isAdmin;

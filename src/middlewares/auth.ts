@@ -21,7 +21,8 @@ export const authenticateToken = async (
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
+      res.status(401).json({ message: 'Authentication required' });
+      return;
     }
 
     const decoded = jwt.verify(
@@ -32,7 +33,8 @@ export const authenticateToken = async (
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(403).json({ message: 'Invalid token' });
+    res.status(403).json({ message: 'Invalid token' });
+    return;
   }
 };
 
@@ -43,10 +45,12 @@ export const isAdmin = async (
 ) => {
   try {
     if (req.user?.role !== 'ADMIN') {
-      return res.status(403).json({ message: 'Admin access required' });
+      res.status(403).json({ message: 'Admin access required' });
+      return;
     }
     next();
   } catch (error) {
-    return res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
+    return;
   }
 };

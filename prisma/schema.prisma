@@ -18,7 +18,7 @@ model Users {
   email         String          @unique
   password      String
   name          String
-  role          UserRole        @default(MEMBER)
+  role          UserRole        @default(ADMIN)
   isVerified    Boolean         @default(false)
   isActive      Boolean         @default(true)
   createdAt     DateTime        @default(now())
