@@ -99,10 +99,11 @@ To install and run the Advanced Library Management System locally, follow these 
 
 ---
 
-Deliverables
-**SQL script to create tables:** [drive link](https://drive.google.com/drive/folders/1zhtr1zR9BXhkAO2ks5vqbwJd33clgkP3?usp=drive_link)
+**Deliverables:**
+[drive link](https://drive.google.com/drive/folders/1zhtr1zR9BXhkAO2ks5vqbwJd33clgkP3?usp=drive_link)
 
-Database relationship diagrams
+**Database relationship diagrams**
+
 ![mermaid-diagram-for-sql-script](https://github.com/user-attachments/assets/d08423f2-b50a-4601-b710-41a732cacefc)
 
 ---
