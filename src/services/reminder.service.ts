@@ -25,6 +25,8 @@ export class ReminderService {
         data: { dueDate: new Date() }
     });
 
+    await ReminderService.checkDueBooks();
+
     for (const borrow of dueBooks) {
       await transporter.sendMail({
         to: borrow.user.email,
