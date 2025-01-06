@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendVerificationEmail = void 0;
+exports.sendVerificationEmail = exports.transporter = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const transporter = nodemailer_1.default.createTransport({
+exports.transporter = nodemailer_1.default.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
-    secure: false,
+    secure: true,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
@@ -25,7 +25,7 @@ const transporter = nodemailer_1.default.createTransport({
 });
 const sendVerificationEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const verificationLink = `http://localhost:3000/`;
-    yield transporter.sendMail({
+    yield exports.transporter.sendMail({
         from: process.env.SMTP_USER,
         to: email,
         subject: 'Verify your email',
