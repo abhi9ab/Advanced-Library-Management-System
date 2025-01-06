@@ -1,4 +1,4 @@
-![Screenshot From 2025-01-06 20-08-12](https://github.com/user-attachments/assets/04806ab3-d745-4098-b8dd-379839e1fc87)# Advanced Library Management System
+# Advanced Library Management System
 
 A backend system for managing a library's books, users, and borrowing activities.
 
