@@ -37,6 +37,12 @@ The Advanced Library Management System is designed to help librarians and librar
 **Delete user**
 ![Screenshot From 2025-01-06 20-08-12](https://github.com/user-attachments/assets/4b6bc59b-3a76-4c26-a9d1-ef32eef08f4d)
 
+**Redis usage: first request for search**
+![Screenshot From 2025-01-07 00-23-48](https://github.com/user-attachments/assets/0bb0117a-5974-412a-bc5c-55425d675cb4)
+
+**Redis usage: second request faster !!!**
+![Screenshot From 2025-01-07 00-23-57](https://github.com/user-attachments/assets/e571d998-ad9c-4803-a2dc-1f1a62e20558)
+
 ---
 
 ## Features
@@ -45,7 +51,7 @@ The Advanced Library Management System is designed to help librarians and librar
 - Manage users: Register, update, and remove library users.
 - Borrowing system: Keep track of borrowed books, due dates, and returns.
 - User authentication and authorization.
-- RESTful API endpoints for integration with other systems.
+- Redis for faster retrieve during search.
 
 ---
 
