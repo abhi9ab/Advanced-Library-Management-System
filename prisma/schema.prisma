@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id            String          @id @default(uuid())
+  email         String          @unique
+  password      String
+  name          String
+  role          UserRole        @default(MEMBER)
+  isVerified    Boolean         @default(false)
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deletedAt     DateTime?
+  borrowedBooks BorrowedBooks[]
+  transactions  Transactions[]
+}
+
+model Books {
+  id              String              @id @default(uuid())
+  isbn            String              @unique
+  title           String
+  copiesAvailable Int
+  totalCopies     Int
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  deletedAt       DateTime?
+  authors         AuthorsOnBooks[]
+  categories      CategoriesOnBooks[]
+  borrowedBooks   BorrowedBooks[]
+}
+
+model Author {
+  id        String           @id @default(uuid())
+  name      String
+  books     AuthorsOnBooks[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model Categories {
+  id        String              @id @default(uuid())
+  name      String              @unique
+  books     CategoriesOnBooks[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+}
+
+model BorrowedBooks {
+  id         String    @id @default(uuid())
+  userId     String
+  bookId     String
+  borrowDate DateTime  @default(now())
+  dueDate    DateTime
+  returnDate DateTime?
+  user       Users     @relation(fields: [userId], references: [id])
+  book       Books     @relation(fields: [bookId], references: [id])
+  fine       Float     @default(0)
+}
+
+model Transactions {
+  id        String          @id @default(uuid())
+  userId    String
+  amount    Float
+  type      TransactionType
+  status    PaymentStatus   @default(PENDING)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  user      Users           @relation(fields: [userId], references: [id])
+}
+
+model AuthorsOnBooks {
+  bookId   String
+  authorId String
+  book     Books  @relation(fields: [bookId], references: [id])
+  author   Author @relation(fields: [authorId], references: [id])
+
+  @@id([bookId, authorId])
+}
+
+model CategoriesOnBooks {
+  bookId     String
+  categoryId String
+  book       Books      @relation(fields: [bookId], references: [id])
+  category   Categories @relation(fields: [categoryId], references: [id])
+
+  @@id([bookId, categoryId])
+}
+
+enum UserRole {
+  ADMIN
+  MEMBER
+}
+
+enum TransactionType {
+  FINE
+  PAYMENT
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
