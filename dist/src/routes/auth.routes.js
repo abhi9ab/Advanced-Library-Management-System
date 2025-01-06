@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth_controller_1 = require("../controllers/auth.controller");
+const auth_1 = require("../middlewares/auth");
 const router = (0, express_1.Router)();
 router.post('/register', auth_controller_1.AuthController.register);
 router.post('/login', auth_controller_1.AuthController.login);
+router.delete('/users/:id', auth_1.authenticateToken, auth_1.isAdmin, auth_controller_1.AuthController.softDelete);
+router.patch('/users/:id/restore', auth_1.authenticateToken, auth_1.isAdmin, auth_controller_1.AuthController.restore);
 exports.default = router;

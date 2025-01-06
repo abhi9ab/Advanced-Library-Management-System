@@ -25,4 +25,24 @@ export class BookController {
       res.status(400).json({ message: 'Search failed', error });
     }
   }
+
+  static async softDelete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      await BookService.softDelete(id);
+      res.status(200).json({ message: 'Book deleted successfully' });
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to delete book', error });
+    }
+  }
+
+  static async restore(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const book = await BookService.restore(id);
+      res.status(200).json(book);
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to restore book', error });
+    }
+  }
 }

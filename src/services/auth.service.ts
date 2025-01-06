@@ -7,17 +7,17 @@ import { sendVerificationEmail } from '../../config/email';
 export class AuthService {
   static async register(input: UserInput) {
     const hashedPassword = await bcrypt.hash(input.password, 10);
-    
+
     const user = await prisma.users.create({
       data: {
         ...input,
         password: hashedPassword,
-        role: 'ADMIN' 
+        role: 'ADMIN'
       }
     });
 
     await sendVerificationEmail(user.email);
-    
+
     return user;
   }
 
@@ -42,5 +42,25 @@ export class AuthService {
     );
 
     return { token, user };
+  }
+
+  static async softDelete(id: string) {
+    return prisma.users.update({
+      where: { id },
+      data: {
+        deletedAt: new Date(),
+        isActive: false
+      }
+    });
+  }
+
+  static async restore(id: string) {
+    return prisma.users.update({
+      where: { id },
+      data: { 
+        deletedAt: null,
+        isActive: true
+      }
+    });
   }
 }

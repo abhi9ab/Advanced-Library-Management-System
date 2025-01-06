@@ -40,5 +40,29 @@ class BookController {
             }
         });
     }
+    static softDelete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                yield book_service_1.BookService.softDelete(id);
+                res.status(200).json({ message: 'Book deleted successfully' });
+            }
+            catch (error) {
+                res.status(400).json({ message: 'Failed to delete book', error });
+            }
+        });
+    }
+    static restore(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const book = yield book_service_1.BookService.restore(id);
+                res.status(200).json(book);
+            }
+            catch (error) {
+                res.status(400).json({ message: 'Failed to restore book', error });
+            }
+        });
+    }
 }
 exports.BookController = BookController;

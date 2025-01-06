@@ -59,4 +59,28 @@ export class BookService {
       }
     });
   }
+
+  static async softDelete(id: string) {
+    return prisma.books.update({
+      where: { id },
+      data: { 
+        deletedAt: new Date(),
+        copiesAvailable: 0
+      }
+    });
+  }
+
+  static async restore(id: string) {
+    const book = await prisma.books.findUnique({
+      where: { id }
+    });
+
+    return prisma.books.update({
+      where: { id },
+      data: { 
+        deletedAt: null,
+        copiesAvailable: book?.totalCopies || 0
+      }
+    });
+  }
 }

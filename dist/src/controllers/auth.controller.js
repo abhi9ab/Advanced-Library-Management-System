@@ -41,5 +41,32 @@ class AuthController {
             }
         });
     }
+    static softDelete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                yield auth_service_1.AuthService.softDelete(id);
+                res.status(200).json({ message: 'User deleted successfully' });
+            }
+            catch (error) {
+                res.status(400).json({ message: 'Failed to delete user', error });
+            }
+        });
+    }
+    static restore(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const user = yield auth_service_1.AuthService.restore(id);
+                res.status(200).json({
+                    message: 'User restored successfully',
+                    user: { id: user.id, email: user.email, role: user.role }
+                });
+            }
+            catch (error) {
+                res.status(400).json({ message: 'Failed to restore user', error });
+            }
+        });
+    }
 }
 exports.AuthController = AuthController;

@@ -75,5 +75,30 @@ class BookService {
             });
         });
     }
+    static softDelete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return prisma_1.default.books.update({
+                where: { id },
+                data: {
+                    deletedAt: new Date(),
+                    copiesAvailable: 0
+                }
+            });
+        });
+    }
+    static restore(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const book = yield prisma_1.default.books.findUnique({
+                where: { id }
+            });
+            return prisma_1.default.books.update({
+                where: { id },
+                data: {
+                    deletedAt: null,
+                    copiesAvailable: (book === null || book === void 0 ? void 0 : book.totalCopies) || 0
+                }
+            });
+        });
+    }
 }
 exports.BookService = BookService;

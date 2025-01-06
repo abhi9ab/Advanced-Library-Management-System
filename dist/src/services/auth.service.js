@@ -44,5 +44,27 @@ class AuthService {
             return { token, user };
         });
     }
+    static softDelete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return prisma_1.default.users.update({
+                where: { id },
+                data: {
+                    deletedAt: new Date(),
+                    isActive: false
+                }
+            });
+        });
+    }
+    static restore(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return prisma_1.default.users.update({
+                where: { id },
+                data: {
+                    deletedAt: null,
+                    isActive: true
+                }
+            });
+        });
+    }
 }
 exports.AuthService = AuthService;

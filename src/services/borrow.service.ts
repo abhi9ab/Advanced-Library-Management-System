@@ -2,9 +2,7 @@ import prisma from '../../config/prisma';
 
 export class BorrowService {
   static async borrowBook(userId: string, bookId: string) {
-    // Start a transaction
     return prisma.$transaction(async (tx) => {
-      // Check borrowing limit
       const activeBorrowings = await tx.borrowedBooks.count({
         where: {
           userId,
@@ -16,7 +14,6 @@ export class BorrowService {
         throw new Error('Borrowing limit reached');
       }
 
-      // Check book availability
       const book = await tx.books.findUnique({
         where: { id: bookId }
       });
@@ -25,7 +22,6 @@ export class BorrowService {
         throw new Error('Book not available');
       }
 
-      // Create borrowed book record
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + 14);
 
@@ -61,12 +57,10 @@ export class BorrowService {
       const days = Math.ceil(
         (today.getTime() - dueDate.getTime()) / (1000 * 86400)
     );
-    fine = days * 1; // $1 per day
+    fine = days * 1;
   }
 
-  // Start a transaction
   return prisma.$transaction(async (tx) => {
-    // Update book availability
     await tx.books.update({
       where: { id: borrowed.bookId },
       data: {
@@ -76,7 +70,6 @@ export class BorrowService {
       }
     });
 
-    // Update borrow record
     const returnedBook = await tx.borrowedBooks.update({
       where: { id: borrowId },
       data: {
@@ -85,7 +78,6 @@ export class BorrowService {
       }
     });
 
-    // Create fine transaction if needed
     if (fine > 0) {
       await tx.transactions.create({
         data: {

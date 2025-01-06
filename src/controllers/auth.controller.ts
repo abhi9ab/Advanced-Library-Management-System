@@ -13,7 +13,7 @@ export class AuthController {
       });
     } catch (error) {
       console.error('Registration Error:', error);
-      res.status(400).json({ message: 'Registration failed', error:error instanceof Error ? error.message : error });
+      res.status(400).json({ message: 'Registration failed', error: error instanceof Error ? error.message : error });
     }
   }
 
@@ -24,6 +24,30 @@ export class AuthController {
       res.json({ token, user: { id: user.id, email: user.email, role: user.role } });
     } catch (error) {
       res.status(401).json({ message: 'Login failed', error });
+    }
+  }
+
+
+  static async softDelete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      await AuthService.softDelete(id);
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to delete user', error });
+    }
+  }
+
+  static async restore(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const user = await AuthService.restore(id);
+      res.status(200).json({
+        message: 'User restored successfully',
+        user: { id: user.id, email: user.email, role: user.role }
+      });
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to restore user', error });
     }
   }
 }

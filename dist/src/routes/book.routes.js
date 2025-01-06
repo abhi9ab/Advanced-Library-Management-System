@@ -6,4 +6,6 @@ const auth_1 = require("../middlewares/auth");
 const router = (0, express_1.Router)();
 router.post('/', auth_1.authenticateToken, auth_1.isAdmin, book_controller_1.BookController.create);
 router.get('/search', auth_1.authenticateToken, book_controller_1.BookController.search);
+router.delete('/:id', auth_1.authenticateToken, auth_1.isAdmin, book_controller_1.BookController.softDelete);
+router.patch('/:id/restore', auth_1.authenticateToken, auth_1.isAdmin, book_controller_1.BookController.restore);
 exports.default = router;

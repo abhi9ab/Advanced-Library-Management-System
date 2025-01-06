@@ -17,9 +17,7 @@ const prisma_1 = __importDefault(require("../../config/prisma"));
 class BorrowService {
     static borrowBook(userId, bookId) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Start a transaction
             return prisma_1.default.$transaction((tx) => __awaiter(this, void 0, void 0, function* () {
-                // Check borrowing limit
                 const activeBorrowings = yield tx.borrowedBooks.count({
                     where: {
                         userId,
@@ -29,14 +27,12 @@ class BorrowService {
                 if (activeBorrowings >= 3) {
                     throw new Error('Borrowing limit reached');
                 }
-                // Check book availability
                 const book = yield tx.books.findUnique({
                     where: { id: bookId }
                 });
                 if (!book || book.copiesAvailable <= 0) {
                     throw new Error('Book not available');
                 }
-                // Create borrowed book record
                 const dueDate = new Date();
                 dueDate.setDate(dueDate.getDate() + 14);
                 yield tx.books.update({
@@ -66,11 +62,9 @@ class BorrowService {
             let fine = 0;
             if (today > dueDate) {
                 const days = Math.ceil((today.getTime() - dueDate.getTime()) / (1000 * 86400));
-                fine = days * 1; // $1 per day
+                fine = days * 1;
             }
-            // Start a transaction
             return prisma_1.default.$transaction((tx) => __awaiter(this, void 0, void 0, function* () {
-                // Update book availability
                 yield tx.books.update({
                     where: { id: borrowed.bookId },
                     data: {
@@ -79,7 +73,6 @@ class BorrowService {
                         }
                     }
                 });
-                // Update borrow record
                 const returnedBook = yield tx.borrowedBooks.update({
                     where: { id: borrowId },
                     data: {
@@ -87,7 +80,6 @@ class BorrowService {
                         fine
                     }
                 });
-                // Create fine transaction if needed
                 if (fine > 0) {
                     yield tx.transactions.create({
                         data: {
