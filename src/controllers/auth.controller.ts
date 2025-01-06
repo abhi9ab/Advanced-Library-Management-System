@@ -12,7 +12,8 @@ export class AuthController {
         user: { id: user.id, email: user.email, name: user.name }
       });
     } catch (error) {
-      res.status(400).json({ message: 'Registration failed', error });
+      console.error('Registration Error:', error);
+      res.status(400).json({ message: 'Registration failed', error:error instanceof Error ? error.message : error });
     }
   }
 

@@ -22,7 +22,7 @@ class AuthService {
         return __awaiter(this, void 0, void 0, function* () {
             const hashedPassword = yield bcryptjs_1.default.hash(input.password, 10);
             const user = yield prisma_1.default.users.create({
-                data: Object.assign(Object.assign({}, input), { password: hashedPassword })
+                data: Object.assign(Object.assign({}, input), { password: hashedPassword, role: 'ADMIN' })
             });
             yield (0, email_1.sendVerificationEmail)(user.email);
             return user;

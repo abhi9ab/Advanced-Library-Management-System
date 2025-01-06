@@ -24,7 +24,8 @@ class AuthController {
                 });
             }
             catch (error) {
-                res.status(400).json({ message: 'Registration failed', error });
+                console.error('Registration Error:', error);
+                res.status(400).json({ message: 'Registration failed', error: error instanceof Error ? error.message : error });
             }
         });
     }
