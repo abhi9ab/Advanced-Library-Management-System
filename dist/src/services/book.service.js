@@ -12,93 +12,86 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookService = void 0;
+exports.restore = exports.softDelete = exports.search = exports.create = void 0;
 const prisma_1 = __importDefault(require("../../config/prisma"));
-class BookService {
-    static create(input) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return prisma_1.default.books.create({
-                data: {
-                    isbn: input.isbn,
-                    title: input.title,
-                    copiesAvailable: input.copiesAvailable,
-                    totalCopies: input.totalCopies,
+const create = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.books.create({
+        data: {
+            isbn: input.isbn,
+            title: input.title,
+            copiesAvailable: input.copiesAvailable,
+            totalCopies: input.totalCopies,
+            authors: {
+                create: input.authors.map(authorId => ({
+                    author: { connect: { id: authorId } }
+                }))
+            },
+            categories: {
+                create: input.categories.map(categoryId => ({
+                    category: { connect: { id: categoryId } }
+                }))
+            }
+        },
+        include: {
+            authors: {
+                include: { author: true }
+            },
+            categories: {
+                include: { category: true }
+            }
+        }
+    });
+});
+exports.create = create;
+const search = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.books.findMany({
+        where: {
+            OR: [
+                { title: { contains: query, mode: 'insensitive' } },
+                { isbn: { contains: query } },
+                {
                     authors: {
-                        create: input.authors.map(authorId => ({
-                            author: { connect: { id: authorId } }
-                        }))
-                    },
-                    categories: {
-                        create: input.categories.map(categoryId => ({
-                            category: { connect: { id: categoryId } }
-                        }))
-                    }
-                },
-                include: {
-                    authors: {
-                        include: { author: true }
-                    },
-                    categories: {
-                        include: { category: true }
-                    }
-                }
-            });
-        });
-    }
-    static search(query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return prisma_1.default.books.findMany({
-                where: {
-                    OR: [
-                        { title: { contains: query, mode: 'insensitive' } },
-                        { isbn: { contains: query } },
-                        {
-                            authors: {
-                                some: {
-                                    author: {
-                                        name: { contains: query, mode: 'insensitive' }
-                                    }
-                                }
+                        some: {
+                            author: {
+                                name: { contains: query, mode: 'insensitive' }
                             }
                         }
-                    ],
-                    deletedAt: null
-                },
-                include: {
-                    authors: {
-                        include: { author: true }
-                    },
-                    categories: {
-                        include: { category: true }
                     }
                 }
-            });
-        });
-    }
-    static softDelete(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return prisma_1.default.books.update({
-                where: { id },
-                data: {
-                    deletedAt: new Date(),
-                    copiesAvailable: 0
-                }
-            });
-        });
-    }
-    static restore(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const book = yield prisma_1.default.books.findUnique({
-                where: { id }
-            });
-            return prisma_1.default.books.update({
-                where: { id },
-                data: {
-                    deletedAt: null,
-                    copiesAvailable: (book === null || book === void 0 ? void 0 : book.totalCopies) || 0
-                }
-            });
-        });
-    }
-}
-exports.BookService = BookService;
+            ],
+            deletedAt: null
+        },
+        include: {
+            authors: {
+                include: { author: true }
+            },
+            categories: {
+                include: { category: true }
+            }
+        }
+    });
+});
+exports.search = search;
+const softDelete = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.books.update({
+        where: { id },
+        data: {
+            deletedAt: new Date(),
+            copiesAvailable: 0
+        }
+    });
+});
+exports.softDelete = softDelete;
+const restore = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield prisma_1.default.books.findUnique({
+        where: { id }
+    });
+    return prisma_1.default.books.update({
+        where: { id },
+        data: {
+            deletedAt: null,
+            copiesAvailable: (book === null || book === void 0 ? void 0 : book.totalCopies) || 0
+        }
+    });
+});
+exports.restore = restore;

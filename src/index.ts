@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import routes from './routes';
 import { apiLimiter } from './middlewares/rateLimiter';
-import { ReminderService } from './services/reminder.service';
+import { scheduleReminders } from './services/reminder.service';
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(apiLimiter);
-ReminderService.scheduleReminders();
+scheduleReminders();
 
 app.use('/api', routes);
 

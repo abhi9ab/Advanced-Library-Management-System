@@ -9,32 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnalyticsController = void 0;
+exports.getMonthlyReportController = exports.getMostBorrowedBooksController = void 0;
 const analytics_service_1 = require("../services/analytics.service");
-class AnalyticsController {
-    static getMostBorrowedBooks(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { limit } = req.query;
-                const books = yield analytics_service_1.AnalyticsService.getMostBorrowedBooks(Number(limit) || 10);
-                res.json(books);
-            }
-            catch (error) {
-                res.status(400).json({ message: 'Failed to get analytics', error });
-            }
-        });
+const getMostBorrowedBooksController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { limit } = req.query;
+        const books = yield (0, analytics_service_1.getMostBorrowedBooks)(Number(limit) || 10);
+        res.json(books);
     }
-    static getMonthlyReport(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { year, month } = req.params;
-                const report = yield analytics_service_1.AnalyticsService.getMonthlyReport(Number(year), Number(month));
-                res.json(report);
-            }
-            catch (error) {
-                res.status(400).json({ message: 'Failed to generate report', error });
-            }
-        });
+    catch (error) {
+        res.status(400).json({ message: 'Failed to get analytics', error });
     }
-}
-exports.AnalyticsController = AnalyticsController;
+});
+exports.getMostBorrowedBooksController = getMostBorrowedBooksController;
+const getMonthlyReportController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { year, month } = req.params;
+        const report = yield (0, analytics_service_1.getMonthlyReport)(Number(year), Number(month));
+        res.json(report);
+    }
+    catch (error) {
+        res.status(400).json({ message: 'Failed to generate report', error });
+    }
+});
+exports.getMonthlyReportController = getMonthlyReportController;

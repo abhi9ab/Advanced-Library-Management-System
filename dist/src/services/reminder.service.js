@@ -12,49 +12,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReminderService = void 0;
+exports.scheduleReminders = exports.checkDueBooks = void 0;
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const email_1 = require("../../config/email");
 const node_schedule_1 = __importDefault(require("node-schedule"));
-class ReminderService {
-    static checkDueBooks() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dueBooks = yield prisma_1.default.borrowedBooks.findMany({
-                where: {
-                    dueDate: {
-                        lte: tomorrow
-                    },
-                    returnDate: null
-                },
-                include: {
-                    user: true,
-                    book: true
-                }
-            });
-            for (const borrow of dueBooks) {
-                yield email_1.transporter.sendMail({
-                    to: borrow.user.email,
-                    subject: 'Book Return Reminder',
-                    html: `
+const checkDueBooks = () => __awaiter(void 0, void 0, void 0, function* () {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dueBooks = yield prisma_1.default.borrowedBooks.findMany({
+        where: {
+            dueDate: {
+                lte: tomorrow
+            },
+            returnDate: null
+        },
+        include: {
+            user: true,
+            book: true
+        }
+    });
+    for (const borrow of dueBooks) {
+        yield email_1.transporter.sendMail({
+            to: borrow.user.email,
+            subject: 'Book Return Reminder',
+            html: `
           <h2>Return Reminder</h2>
           <p>The book "${borrow.book.title}" is due ${borrow.dueDate < new Date() ? 'overdue' : 'tomorrow'}.</p>
         `
-                });
-            }
         });
     }
-    static scheduleReminders() {
-        // Run daily at 9 AM
-        node_schedule_1.default.scheduleJob('0 9 * * *', () => __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield ReminderService.checkDueBooks();
-            }
-            catch (error) {
-                console.error('Reminder scheduling error:', error);
-            }
-        }));
-    }
-}
-exports.ReminderService = ReminderService;
+});
+exports.checkDueBooks = checkDueBooks;
+const scheduleReminders = () => __awaiter(void 0, void 0, void 0, function* () {
+    // Run daily at 9 AM
+    node_schedule_1.default.scheduleJob('0 9 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield (0, exports.checkDueBooks)();
+        }
+        catch (error) {
+            console.error('Reminder scheduling error:', error);
+        }
+    }));
+});
+exports.scheduleReminders = scheduleReminders;

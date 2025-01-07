@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { AuthController } from '../controllers/auth.controller';
+import { loginController, registerController, softDeleteController, restoreController } from '../controllers/auth.controller';
 import { authenticateToken, isAdmin } from '../middlewares/auth';
 
 const router = Router();
 
-router.post('/register', AuthController.register);
-router.post('/login', AuthController.login);
-router.delete('/users/:id', authenticateToken, isAdmin, AuthController.softDelete);
-router.patch('/users/:id/restore', authenticateToken, isAdmin, AuthController.restore);
+router.post('/register', registerController);
+router.post('/login', loginController);
+router.delete('/users/:id', authenticateToken, isAdmin, softDeleteController);
+router.patch('/users/:id/restore', authenticateToken, isAdmin, restoreController);
 
 export default router;

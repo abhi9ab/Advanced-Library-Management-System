@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { AnalyticsController } from '../controllers/analytics.controller';
+import { getMostBorrowedBooksController, getMonthlyReportController } from '../controllers/analytics.controller';
 import { authenticateToken, isAdmin } from '../middlewares/auth';
 
 const router = Router();
 
-router.get('/most-borrowed', authenticateToken, isAdmin, AnalyticsController.getMostBorrowedBooks);
-router.get('/monthly-report/:year/:month', authenticateToken, isAdmin, AnalyticsController.getMonthlyReport);
+router.get('/most-borrowed', authenticateToken, isAdmin, getMostBorrowedBooksController);
+router.get('/monthly-report/:year/:month', authenticateToken, isAdmin, getMonthlyReportController);
 
 export default router;

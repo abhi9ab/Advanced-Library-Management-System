@@ -9,60 +9,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookController = void 0;
+exports.restoreController = exports.softDeleteController = exports.searchController = exports.createController = void 0;
 const book_service_1 = require("../services/book.service");
 const validators_1 = require("../models/validators");
-class BookController {
-    static create(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const validatedData = validators_1.bookSchema.parse(req.body);
-                const book = yield book_service_1.BookService.create(validatedData);
-                res.status(201).json(book);
-            }
-            catch (error) {
-                res.status(400).json({ message: 'Failed to create book', error });
-            }
-        });
+const createController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const validatedData = validators_1.bookSchema.parse(req.body);
+        const book = yield (0, book_service_1.create)(validatedData);
+        res.status(201).json(book);
     }
-    static search(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { query } = req.query;
-                if (typeof query !== 'string') {
-                    throw new Error('Invalid query parameter');
-                }
-                const books = yield book_service_1.BookService.search(query);
-                res.json(books);
-            }
-            catch (error) {
-                res.status(400).json({ message: 'Search failed', error });
-            }
-        });
+    catch (error) {
+        res.status(400).json({ message: 'Failed to create book', error });
     }
-    static softDelete(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                yield book_service_1.BookService.softDelete(id);
-                res.status(200).json({ message: 'Book deleted successfully' });
-            }
-            catch (error) {
-                res.status(400).json({ message: 'Failed to delete book', error });
-            }
-        });
+});
+exports.createController = createController;
+const searchController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { query } = req.query;
+        if (typeof query !== 'string') {
+            throw new Error('Invalid query parameter');
+        }
+        const books = yield (0, book_service_1.search)(query);
+        res.json(books);
     }
-    static restore(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                const book = yield book_service_1.BookService.restore(id);
-                res.status(200).json(book);
-            }
-            catch (error) {
-                res.status(400).json({ message: 'Failed to restore book', error });
-            }
-        });
+    catch (error) {
+        res.status(400).json({ message: 'Search failed', error });
     }
-}
-exports.BookController = BookController;
+});
+exports.searchController = searchController;
+const softDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        yield (0, book_service_1.softDelete)(id);
+        res.status(200).json({ message: 'Book deleted successfully' });
+    }
+    catch (error) {
+        res.status(400).json({ message: 'Failed to delete book', error });
+    }
+});
+exports.softDeleteController = softDeleteController;
+const restoreController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const book = yield (0, book_service_1.restore)(id);
+        res.status(200).json(book);
+    }
+    catch (error) {
+        res.status(400).json({ message: 'Failed to restore book', error });
+    }
+});
+exports.restoreController = restoreController;
