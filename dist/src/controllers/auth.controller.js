@@ -9,9 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restoreController = exports.softDeleteController = exports.loginController = exports.registerController = void 0;
+exports.restoreController = exports.softDeleteController = exports.loginController = exports.registerController = exports.verifyEmailController = void 0;
 const auth_service_1 = require("../services/auth.service");
 const validators_1 = require("../models/validators");
+const verifyEmailController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { token } = req.query;
+        if (!token || typeof token !== 'string') {
+            res.status(400).json({ message: 'Invalid verification token' });
+            return;
+        }
+        const user = yield (0, auth_service_1.verifyEmail)(token);
+        res.status(200).json({
+            message: 'Email verified successfully',
+            user: { id: user.id, email: user.email }
+        });
+    }
+    catch (error) {
+        res.status(400).json({ message: 'Email verification failed', error });
+    }
+});
+exports.verifyEmailController = verifyEmailController;
 const registerController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validatedData = validators_1.userSchema.parse(req.body);

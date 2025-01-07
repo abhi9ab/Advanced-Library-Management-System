@@ -54,3 +54,19 @@ export const isAdmin = async (
     return;
   }
 };
+
+export const isEmailVerified = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await prisma.users.findUnique({
+      where: { id: req.user?.userId }
+    });
+
+    if (!user?.isVerified) {
+      return res.status(403).json({ message: 'Please verify your email first' });
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};

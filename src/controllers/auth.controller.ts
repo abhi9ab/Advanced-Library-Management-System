@@ -1,6 +1,24 @@
 import { Request, Response } from 'express';
-import { login, register, softDelete, restore } from '../services/auth.service';
+import { login, register, softDelete, restore, verifyEmail } from '../services/auth.service';
 import { userSchema, loginSchema } from '../models/validators';
+
+export const verifyEmailController = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+    if (!token || typeof token !== 'string') {
+      res.status(400).json({ message: 'Invalid verification token' });
+      return;
+    }
+
+    const user = await verifyEmail(token);
+    res.status(200).json({
+      message: 'Email verified successfully',
+      user: { id: user.id, email: user.email }
+    });
+  } catch (error) {
+    res.status(400).json({ message: 'Email verification failed', error });
+  }
+};
 
 export const registerController = async (req: Request, res: Response) => {
   try {
