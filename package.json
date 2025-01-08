@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/src/index.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "vercel-build": "prisma generate"
   },
   "keywords": [],
   "author": "",

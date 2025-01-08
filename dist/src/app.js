@@ -17,11 +17,8 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(rateLimiter_1.apiLimiter);
 app.get('/', (req, res) => {
-    res.send('<h1>Hello</h1>');
+    res.json({ message: "hello there" });
 });
 app.use('/api', routes_1.default);
 (0, reminder_service_1.scheduleReminders)();
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+exports.default = app;

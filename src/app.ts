@@ -15,17 +15,12 @@ app.use(cors());
 app.use(express.json());
 app.use(apiLimiter);
 
-
 app.get('/', (req: Request, res: Response) => {
-  res.send('<h1>Hello</h1>');
+  res.json({ message: "hello there" });
 });
 
 app.use('/api', routes);
 
 scheduleReminders();
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+export default app;
