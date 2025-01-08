@@ -16,6 +16,10 @@ app.use(express.json());
 app.use(apiLimiter);
 scheduleReminders();
 
+app.get('/', (req: Request, res: Response) => {
+  res.send('<h1>Hello</h1>');
+});
+
 app.use('/api', routes);
 
 const PORT = process.env.PORT || 3000;
