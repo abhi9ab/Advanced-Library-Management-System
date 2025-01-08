@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(apiLimiter);
 
 app.get('/', (req: Request, res: Response) => {
-  res.json({ message: "hello there" });
+  res.json({ message: "Hello :) This is a library management server" });
 });
 
 app.use('/api', routes);
