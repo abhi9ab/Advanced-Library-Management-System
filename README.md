@@ -138,7 +138,7 @@ To install and run the Advanced Library Management System locally, follow these 
     npx prisma migrate dev
     ```
 
-5. Set up your redis database using docker and run
+5. **Set up your Redis database using docker**
    
     ```bash
     docker pull redis-stack
@@ -146,13 +146,13 @@ To install and run the Advanced Library Management System locally, follow these 
     
     ![image](https://github.com/user-attachments/assets/cf6f5c2e-28da-4580-b590-c1addcb651e7)
 
-6. Get your JWT_SECRET
+6. **Get your JWT_SECRET**
    
     ```bash
      node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" 
     ```
 
-8. Get your gmail app password
+8. **Get your gmail app password**
    
    [watch this video](https://www.youtube.com/watch?v=cqdAS49RthQ)
     
@@ -169,12 +169,31 @@ To install and run the Advanced Library Management System locally, follow these 
 
 ---
 
-**Deliverables:**
+## Deliverables:
+
 [drive link](https://drive.google.com/drive/folders/1zhtr1zR9BXhkAO2ks5vqbwJd33clgkP3?usp=drive_link)
 
-**Database relationship diagrams**
+---
+
+## Database relationship diagrams:
 
 ![mermaid-diagram-for-sql-script](https://github.com/user-attachments/assets/d08423f2-b50a-4601-b710-41a732cacefc)
+
+---
+
+## Contributing
+
+- Fork the repository
+- Create a feature branch
+- Commit changes
+- Push to the branch
+- Create a Pull Request
+
+---
+
+## License
+
+[MIT](https://github.com/abhi9ab/Advanced-Library-Management-System/blob/main/LICENSE)
 
 ---
 
