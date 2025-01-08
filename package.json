@@ -4,8 +4,9 @@
   "description": "A library management system with TypeScript and Prisma",
   "main": "dist/index.js",
   "scripts": {
-    "start": "npx tsc && node dist/src/index.js",
-    "test": "jest"
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "dev": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
