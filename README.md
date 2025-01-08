@@ -10,6 +10,9 @@ The Advanced Library Management System is designed to help librarians and librar
 
 ---
 
+**Register**
+![api-auth-register](https://github.com/user-attachments/assets/922938e9-194c-4aa4-81dd-156703788fd1)
+
 **Login**
 ![Screenshot From 2025-01-06 15-35-32](https://github.com/user-attachments/assets/78112550-7e1b-4e9e-95c6-63b0b7cc9770)
 
@@ -43,16 +46,56 @@ The Advanced Library Management System is designed to help librarians and librar
 **Redis usage: second request faster !!!**
 ![Screenshot From 2025-01-07 00-23-57](https://github.com/user-attachments/assets/e571d998-ad9c-4803-a2dc-1f1a62e20558)
 
+**Payment invoice**
+![api-payment-invoice](https://github.com/user-attachments/assets/429b1d12-28e2-47f7-9c83-95502a813e77)
+
+**Due payment demo (Youtube Video)**  
+[![Watch the video](https://img.youtube.com/vi/OSkmqp6V8RE/0.jpg)](https://www.youtube.com/watch?v=OSkmqp6V8RE)
+
+**Email Verification demo (Youtube Video)**  
+[![Watch the video](https://img.youtube.com/vi/umJNrZFyyew/0.jpg)](https://www.youtube.com/watch?v=umJNrZFyyew)
+
+**and much more...**
+
 ---
 
 ## Features
 
-- Manage books: Add, update, delete, and search for books.
+**Authentication**
+- JWT-based authentication system
+- Role-based access control (Admin/Member)
+- Email verification for new users
+- Secure password hashing with bcrypt
+- CRUD operations for users (Admin only)
 - Manage users: Register, update, and remove library users.
-- Borrowing system: Keep track of borrowed books, due dates, and returns.
-- User authentication and authorization.
-- Redis for faster retrieve during search.
 
+**Book Management**
+- Manage books: Add, update, delete, and search for books.
+- Borrowing system: Keep track of borrowed books, due dates, and returns.
+- Redis for faster retrieve during search.
+- Book search functionality with filters
+        Search by title
+        Search by author
+        Search by ISBN
+- Real-time book availability tracking
+  
+**Borrowing System**
+- Book borrowing with automated due date assignment
+- Maximum 3 books per user limit
+- Return processing with automatic fine calculation
+- Late return fine: $1 per day
+
+**Payment System**
+- Fine payment processing
+- HTML invoice generation
+- Transaction history tracking
+- Payment status monitoring (Pending/Completed/Failed)
+
+**Automated Notifications**
+- Email verification for new accounts
+- Due date reminders (3 days before due date)
+- Overdue notifications with fine amounts
+  
 ---
 
 ## Installation
@@ -78,14 +121,16 @@ To install and run the Advanced Library Management System locally, follow these 
 
     ```env
     PORT=3000
-    DATABASE_URL=your-database-url
-    JWT_SECRET=your-jwt-secret
-    SMTP_HOST=your-host
-    SMTP_PORT=your-port (example 465)
-    SMTP_USER=email
-    SMTP_PASS=password
+    DATABASE_URL=
+    JWT_SECRET=
+    SMTP_HOST="smtp.gmail.com"
+    SMTP_PORT="465"
+    SMTP_USER=
+    SMTP_PASS=
     RATE_LIMIT_WINDOW="15m"
     RATE_LIMIT_MAX="100"
+    REDIS_URL=redis://localhost:6379
+    
     ```
 4. **Confiure the database**
 
@@ -93,13 +138,32 @@ To install and run the Advanced Library Management System locally, follow these 
     npx prisma migrate dev
     ```
 
-5. **Run the application:**
+5. Set up your redis database using docker and run
+   
+    ```bash
+    docker pull redis-stack
+    ```
+    
+    ![image](https://github.com/user-attachments/assets/cf6f5c2e-28da-4580-b590-c1addcb651e7)
+
+6. Get your JWT_SECRET
+   
+    ```bash
+     node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" 
+    ```
+
+8. Get your gmail app password
+   
+   [watch this video](https://www.youtube.com/watch?v=cqdAS49RthQ)
+    
+
+10. **Run the application:**
 
     ```bash
     npm start
     ```
 
-6. **Access the application:**
+11. **Access the application:**
 
     Open your postman and go to `http://localhost:3000`.
 
