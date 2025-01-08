@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { create, search, softDelete, restore } from '../services/book.service';
+import { create, search, softDelete, restore, update, getById } from '../services/book.service';
 import { bookSchema } from '../models/validators';
 
 export const createController = async (req: Request, res: Response) => {
@@ -22,6 +22,31 @@ export const searchController = async (req: Request, res: Response) => {
     res.json(books);
   } catch (error) {
     res.status(400).json({ message: 'Search failed', error });
+  }
+}
+
+export const updateController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const validatedData = bookSchema.parse(req.body);
+    const book = await update(id, validatedData);
+    res.json(book);
+  } catch (error) {
+    res.status(400).json({ message: 'Failed to update book', error });
+  }
+}
+
+export const getByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const book = await getById(id);
+    if (!book) {
+      res.status(404).json({ message: 'Book not found' });
+      return;
+    }
+    res.json(book);
+  } catch (error) {
+    res.status(400).json({ message: 'Failed to fetch book', error });
   }
 }
 

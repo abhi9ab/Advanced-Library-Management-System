@@ -59,6 +59,55 @@ export const search = async (query: string) => {
   });
 }
 
+export const update = async (id: string, input: BookInput) => {
+  return prisma.books.update({
+    where: { id },
+    data: {
+      isbn: input.isbn,
+      title: input.title,
+      copiesAvailable: input.copiesAvailable,
+      totalCopies: input.totalCopies,
+      authors: {
+        deleteMany: {},
+        create: input.authors.map(authorId => ({
+          author: { connect: { id: authorId } }
+        }))
+      },
+      categories: {
+        deleteMany: {},
+        create: input.categories.map(categoryId => ({
+          category: { connect: { id: categoryId } }
+        }))
+      }
+    },
+    include: {
+      authors: {
+        include: { author: true }
+      },
+      categories: {
+        include: { category: true }
+      }
+    }
+  });
+}
+
+export const getById = async (id: string) => {
+  return prisma.books.findUnique({
+    where: { 
+      id,
+      deletedAt: null 
+    },
+    include: {
+      authors: {
+        include: { author: true }
+      },
+      categories: {
+        include: { category: true }
+      }
+    }
+  });
+}
+
 export const softDelete = async (id: string) => {
   return prisma.books.update({
     where: { id },

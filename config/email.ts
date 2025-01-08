@@ -41,3 +41,27 @@ export const sendVerificationEmail = async (email: string, userId: string) => {
     throw new Error('Failed to send verification email');
   }
 };
+
+export const sendDueDateReminder = async (
+  email: string,
+  bookTitle: string,
+  dueDate: Date
+) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: 'Book Due Date Reminder',
+      html: `
+        <h1>Library Book Due Tomorrow</h1>
+        <p>This is a friendly reminder that your book "${bookTitle}" is due tomorrow (${dueDate.toLocaleDateString()}).</p>
+        <p>Please return it to avoid late fees of $1 per day.</p>
+        <p>If you need more time, please visit the library to extend your borrowing period.</p>
+      `
+    });
+    return true;
+  } catch (error) {
+    console.error('Error sending due date reminder:', error);
+    throw new Error('Failed to send due date reminder');
+  }
+};
