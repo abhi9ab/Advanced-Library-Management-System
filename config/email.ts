@@ -20,7 +20,7 @@ export const sendVerificationEmail = async (email: string, userId: string) => {
     { expiresIn: '24h' }
   );
 
-  const verificationLink = `http://localhost:${process.env.PORT}/verify-email?token=${verificationToken}`;
+  const verificationLink = `http://localhost:${process.env.PORT}/api/auth/verify-email?token=${verificationToken}`;
 
   try {
     await transporter.sendMail({
