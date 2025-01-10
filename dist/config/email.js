@@ -26,7 +26,7 @@ exports.transporter = nodemailer_1.default.createTransport({
 });
 const sendVerificationEmail = (email, userId) => __awaiter(void 0, void 0, void 0, function* () {
     const verificationToken = jsonwebtoken_1.default.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
-    const verificationLink = `http://localhost:${process.env.PORT}/verify-email?token=${verificationToken}`;
+    const verificationLink = `http://localhost:${process.env.PORT}/api/auth/verify-email?token=${verificationToken}`;
     try {
         yield exports.transporter.sendMail({
             from: process.env.SMTP_USER,

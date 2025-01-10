@@ -17,7 +17,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(rateLimiter_1.apiLimiter);
 app.get('/', (req, res) => {
-    res.json({ message: "hello there" });
+    res.json({ message: "Hello :) This is a library management server" });
 });
 app.use('/api', routes_1.default);
 (0, reminder_service_1.scheduleReminders)();
