@@ -141,7 +141,7 @@ To install and run the Advanced Library Management System locally, follow these 
 5. **Set up your Redis database using docker**
    
     ```bash
-    docker pull redis-stack
+    docker pull redis/redis-stack
     ```
     
     ![image](https://github.com/user-attachments/assets/cf6f5c2e-28da-4580-b590-c1addcb651e7)
