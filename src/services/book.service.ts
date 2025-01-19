@@ -1,4 +1,4 @@
-import prisma from '../../config/prisma';
+import prisma from '../config/prisma';
 import { BookInput } from '../models/types';
 
 export const create = async (input: BookInput) => {
@@ -93,9 +93,9 @@ export const update = async (id: string, input: BookInput) => {
 
 export const getById = async (id: string) => {
   return prisma.books.findUnique({
-    where: { 
+    where: {
       id,
-      deletedAt: null 
+      deletedAt: null
     },
     include: {
       authors: {

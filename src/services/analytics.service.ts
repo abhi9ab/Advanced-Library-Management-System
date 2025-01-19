@@ -1,4 +1,4 @@
-import prisma from '../../config/prisma';
+import prisma from '../config/prisma';
 
 export const getMostBorrowedBooks = async (limit = 10) => {
   return prisma.books.findMany({

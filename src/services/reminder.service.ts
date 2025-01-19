@@ -1,5 +1,5 @@
-import prisma from '../../config/prisma';
-import { transporter } from '../../config/email';
+import prisma from '../config/prisma';
+import { transporter } from '../config/email';
 import schedule from 'node-schedule';
 
 export const checkDueBooks = async () => {

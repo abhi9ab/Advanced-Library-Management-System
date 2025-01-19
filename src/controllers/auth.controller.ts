@@ -48,7 +48,7 @@ export const loginController = async (req: Request, res: Response) => {
 export const softDeleteController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await softDelete(id);
+    await softDelete(id!);
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(400).json({ message: 'Failed to delete user', error });
@@ -58,7 +58,7 @@ export const softDeleteController = async (req: Request, res: Response) => {
 export const restoreController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const user = await restore(id);
+    const user = await restore(id!);
     res.status(200).json({
       message: 'User restored successfully',
       user: { id: user.id, email: user.email, role: user.role }

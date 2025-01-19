@@ -1,4 +1,4 @@
-import prisma from '../../config/prisma';
+import prisma from '../config/prisma';
 
 export const borrowBook = async (userId: string, bookId: string) => {
   return prisma.$transaction(async (tx) => {

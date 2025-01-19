@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import prisma from '../../config/prisma';
+import prisma from '../config/prisma';
 import { UserInput, LoginInput } from '../models/types';
-import { sendVerificationEmail } from '../../config/email';
+import { sendVerificationEmail } from '../config/email';
 
 export const verifyEmail = async (token: string) => {
   try {

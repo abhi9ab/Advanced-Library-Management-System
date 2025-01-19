@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
-    "rootDir": "./",
-    "outDir": "./dist",
-    "strict": true,
+    /* Base Options: */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    /* If transpiling with TypeScript: */
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "outDir": "dist",
+    "sourceMap": true,
+    /* If your code doesn't run in the DOM: */
+    "lib": ["es2022"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules, dist"]
 }

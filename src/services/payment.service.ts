@@ -1,4 +1,4 @@
-import prisma from '../../config/prisma';
+import prisma from '../config/prisma';
 
 export const payFine = async (transactionId: string, userId: string) => {
   const transaction = await prisma.transactions.findUnique({

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createController, searchController, softDeleteController, restoreController, updateController, getByIdController } from '../controllers/book.controller';
 import { authenticateToken, isAdmin } from '../middlewares/auth';
-import { cacheMiddleware } from '../../config/redis';
+import { cacheMiddleware } from '../config/redis';
 
 const router = Router();
 
