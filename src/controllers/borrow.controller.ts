@@ -15,7 +15,7 @@ export const borrowBookController = async (req: Request, res: Response) => {
 export const returnBookController = async (req: Request, res: Response) => {
   try {
     const { borrowId } = req.params;
-    const returnedBook = await returnBook(borrowId);
+    const returnedBook = await returnBook(borrowId!);
     res.json(returnedBook);
   } catch (error) {
     res.status(400).json({ message: 'Failed to return book', error });
